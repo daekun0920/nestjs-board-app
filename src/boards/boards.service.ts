@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { Board } from './board.model';
 
 @Injectable()
 export class BoardsService {
-    private boards = [];
+    // 인 메모리 데이터 베이스
+    private boards: Board[] = [];
 
-    getAllBoards() {
+    getAllBoards(): Board[] {
         return this.boards;
     }
 }
