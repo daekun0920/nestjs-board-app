@@ -24,6 +24,12 @@ export class BoardsController {
     //     return this.boardService.createBoard(createBoardDto);
     // }
 
+    @Post()
+    @UsePipes(ValidationPipe)
+    createBoard(@Body() createBoard: CreateBoardDto): Promise<Board> {
+        return this.boardService.createBoard(createBoard);
+    }
+
     @Get("/:id")
     getBoardById(@Param('id') id: number): Promise<Board> {
         return this.boardService.getBoardById(id);
