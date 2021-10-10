@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { BoardStatus } from './board-status.enum';
 import { Board } from './board.entity';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -9,8 +10,11 @@ export class BoardsController {
     // 암묵적 선언
     constructor(private boardService: BoardsService) {}
 
-
-
+    @Get('/')
+    getAllBoard(): Promise<Board[]> {
+        return this.boardService.getAllBoard();
+    }
+    
     // @Get('/')
     // getAllBoard(): Board[] {
     //     return this.boardService.getAllBoards();
@@ -40,10 +44,23 @@ export class BoardsController {
     //     return this.boardService.getBoardById(id);;
     // }
 
+    @Delete('/:id')
+    deleteBoard(@Param('id', ParseIntPipe) id: number): void {
+        this.boardService.deleteBoard(id);
+    }
+
     // @Delete('/:id')
     // deleteBoard(@Param('id') id: string): void {
     //     this.boardService.deleteBoard(id);
     // }
+
+    @Patch('/:id/status')
+    updateBoardStatus(
+        @Param('id', ParseIntPipe) id: number,
+        @Body('status', BoardStatusValidationPipe) status: BoardStatus
+    ) {
+        return this.boardService.updateBoardStatus(id, status); 
+    }
 
     // @Patch('/:id/status')
     // updateBoardStatus(
