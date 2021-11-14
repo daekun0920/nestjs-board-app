@@ -2,6 +2,8 @@ import { Body, Controller, Post, Req, UseGuards, ValidationPipe } from '@nestjs/
 import { AuthGuard } from '@nestjs/passport';
 import { AuthCredentialsDto } from './auth-credential.dto';
 import { AuthService } from './auth.service';
+import { GetUser } from './get-user.decorator';
+import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -21,5 +23,11 @@ export class AuthController {
     @UseGuards(AuthGuard()) // 인증 미들웨어 (guard -> interceptor(before) -> pipe -> controller -> 
     authTest(@Req() req) {  // service -> controller -> interceptor(after) -> filter(if applicable) -> client)
         console.log(req);
+    }
+
+    @Post('/test')
+    @UseGuards(AuthGuard())
+    test(@GetUser() user: User) {
+        console.log('user', user);
     }
 }
